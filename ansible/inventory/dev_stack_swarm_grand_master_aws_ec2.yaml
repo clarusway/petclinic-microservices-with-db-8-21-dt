@@ -6,6 +6,6 @@ filters:
   tag:environment: dev
   tag:swarm-role: grand-master
 hostnames:
-  - "image-id"
+  - "private-ip-address"
 compose:
-  ansible_user: "'ec2-user'"
+  ansible_user: "'root'"
