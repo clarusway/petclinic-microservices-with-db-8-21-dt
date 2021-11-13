@@ -2,7 +2,7 @@
   tasks:
   - name: Copy docker compose file to grand master
     copy:
-      src: "${workspace}/docker-compose-swarm-dev-tagged.yml"
+      src: "{{ workspace }}/docker-compose-swarm-dev-tagged.yml"
       dest: /home/ec2-user/docker-compose-swarm-dev-tagged.yml
 
   - name: get login credentials for ecr
