@@ -6,7 +6,6 @@ resources:
 - discovery-server-deployment.yaml
 - grafana-server-deployment.yaml
 - hystrix-dashboard-deployment.yaml
-- mysql-server-deployment.yaml
 - prometheus-server-deployment.yaml
 - tracing-server-deployment.yaml
 - vets-service-deployment.yaml

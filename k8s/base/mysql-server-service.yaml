@@ -9,11 +9,5 @@ metadata:
     io.kompose.service: mysql-server
   name: mysql-server
 spec:
-  ports:
-    - name: "3306"
-      port: 3306
-      targetPort: 3306
-  selector:
-    io.kompose.service: mysql-server
-status:
-  loadBalancer: {}
+  type: ExternalName
+  externalName: petclinic.cbanmzptkrzf.us-east-1.rds.amazonaws.com
