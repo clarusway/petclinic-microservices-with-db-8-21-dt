@@ -13,7 +13,7 @@ metadata:
   name: api-gateway
 spec:
   rules:
-    - host: petclinicdt.clarusway.us
+    - host: petclinicjj.clarusway.us
       http:
         paths:
           - backend:
