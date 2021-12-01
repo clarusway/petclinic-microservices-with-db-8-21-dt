@@ -70,7 +70,7 @@ pipeline {
                 --from-file=.dockerconfigjson=$JENKINS_HOME/.docker/config.json \
                 --type=kubernetes.io/dockerconfigjson
                 """
-                sh "rm -f helm/config"
+                sh "rm -f k8s/config"
                 sh "rancher cluster kf $CLUSTERID > k8s/config"
                 sh "chmod 400 k8s/config"
                 sh "helm repo add stable-petclinic s3://petclinic-helm-charts/stable/myapp/  | echo stable-myapp is already added "
