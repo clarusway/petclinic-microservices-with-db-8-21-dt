@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -f k8s/docker-compose.yml -o k8s/petclinic_chart/templates
+    kompose.cmd: kompose convert -f k8s/docker-compose.yml -o k8s/base
     kompose.version: 1.22.0 (955b78124)
   creationTimestamp: null
   labels:
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f k8s/docker-compose.yml -o k8s/petclinic_chart/templates
+        kompose.cmd: kompose convert -f k8s/docker-compose.yml -o k8s/base
         kompose.version: 1.22.0 (955b78124)
       creationTimestamp: null
       labels:
@@ -35,4 +35,8 @@ spec:
             - containerPort: 3306
           resources: {}
       restartPolicy: Always
+      initContainers:
+      - name: init-discovery-server
+        image: busybox
+        command: ['sh', '-c', 'until nc -z discovery-server:8761; do echo waiting for discovery-server; sleep 2; done;']
 status: {}
