@@ -87,13 +87,13 @@
     shell: |
       kubeadm init --config /home/ubuntu/clusterconfig.yml
     
-  - name: Setup kubeconfig for ubuntu user
-    become: true
-    command: "{{ item }}"
-    with_items:
-     - mkdir -p /home/ubuntu/.kube
-     - cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
-     - chown ubuntu:ubuntu /home/ubuntu/.kube/config
+  # - name: Setup kubeconfig for ubuntu user
+  #   become: true
+  #   command: "{{ item }}"
+  #   with_items:
+  #    - mkdir -p /home/ubuntu/.kube
+  #    - cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
+  #    - chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
   - name: Install flannel pod network
     shell: kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
