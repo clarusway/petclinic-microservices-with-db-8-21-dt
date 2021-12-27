@@ -82,10 +82,10 @@
       export CONTROLPLANE_ENDPOINT={{ hostvars[inventory_hostname]['private_ip_address'] }}
       envsubst < /home/ubuntu/clusterconfig-base.yml > /home/ubuntu/clusterconfig.yml
 
-  - name: initialize the Kubernetes cluster using kubeadm
-    become: true
-    shell: |
-      kubeadm init --config /home/ubuntu/clusterconfig.yml
+  # - name: initialize the Kubernetes cluster using kubeadm
+  #   become: true
+  #   shell: |
+  #     kubeadm init --config /home/ubuntu/clusterconfig.yml
     
   # - name: Setup kubeconfig for ubuntu user
   #   become: true
