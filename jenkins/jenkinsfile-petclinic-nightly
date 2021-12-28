@@ -123,12 +123,11 @@ pipeline {
             }
         }
 
-/*        stage('Deploy App on Kubernetes Cluster'){
+        stage('Deploy App on Kubernetes Cluster'){
             steps {
                 echo 'Deploying App on Kubernetes Cluster'
-                sh ''
-                sh 'envsubst < docker-compose-swarm-dev.yml > docker-compose-swarm-dev-tagged.yml'
-                sh 'ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b --extra-vars "workspace=${WORKSPACE} app_name=${APP_NAME} aws_region=${AWS_REGION} ecr_registry=${ECR_REGISTRY}" ./ansible/playbooks/pb_deploy_app_on_docker_swarm.yaml'
+                sh "envsubst < k8s/base/kustomization-template.yml > k8s/base/kustomization.yml"
+                sh "ansible-playbook -i ${WORKSPACE}/ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml ${WORKSPACE}/ansible/playbooks/dev-petclinic-deploy.yaml"
             }
         }
 
@@ -157,7 +156,7 @@ pipeline {
                 echo "Run the Selenium Functional Test on QA Environment"
                 sh 'ansible-playbook -vvv --connection=local --inventory 127.0.0.1, --extra-vars "workspace=${WORKSPACE} master_public_ip=${GRAND_MASTER_PUBLIC_IP}" ./ansible/playbooks/pb_run_selenium_jobs.yaml'
             }
-        }*/
+        }
     }
 
     post {
@@ -172,8 +171,10 @@ pipeline {
                   --force
                 """
             echo 'Tear down the Kubernetes Cluster infrastructure'
-            sh "cd ${WORKSPACE}/infrastructure/k8s-terraform"
-            sh "terraform destroy -auto-approve"
+            sh """
+            cd ${WORKSPACE}/infrastructure/k8s-terraform"
+            terraform destroy -auto-approve
+            """
             echo "Delete existing key pair using AWS CLI"
             sh "aws ec2 delete-key-pair --region ${AWS_REGION} --key-name ${CFN_KEYPAIR}"
             sh "rm -rf ${CFN_KEYPAIR}"
