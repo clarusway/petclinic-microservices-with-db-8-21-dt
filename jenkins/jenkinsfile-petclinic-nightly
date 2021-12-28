@@ -77,7 +77,7 @@ pipeline {
                 sh "chmod 400 ${CFN_KEYPAIR}"
             }
         }
-        stage('Create QA Automation Infrastructure') {
+/*        stage('Create QA Automation Infrastructure') {
             steps {
                 echo 'Creating QA Automation Infrastructure for Dev Environment with Terraform'
                 sh """
@@ -113,7 +113,7 @@ pipeline {
                 }
             }
         }
-
+*/
         stage('Create Kubernetes Cluster for QA Automation Build') {
             steps {
                 echo "Setup Kubernetes Cluster for QA Automation Build for ${APP_NAME} App"
