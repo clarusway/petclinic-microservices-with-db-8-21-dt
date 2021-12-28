@@ -13,8 +13,8 @@ pipeline {
         ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${CFN_KEYPAIR}"
         ANSIBLE_HOST_KEY_CHECKING="False"
     }
-/*    stages {
-        stage('Create ECR Repo') {
+    stages {
+/*        stage('Create ECR Repo') {
             steps {
                 echo "Creating ECR Repo for ${APP_NAME} app"
                 sh """
