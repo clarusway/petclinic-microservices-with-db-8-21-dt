@@ -1,0 +1,5 @@
+namespace: "petclinic-dev"
+bases:
+- ../base
+patches:
+- replica-count.yml
