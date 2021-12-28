@@ -80,10 +80,11 @@ pipeline {
         stage('Create QA Automation Infrastructure') {
             steps {
                 echo 'Creating QA Automation Infrastructure for Dev Environment with Terraform'
-                sh "cd ${WORKSPACE}/infrastructure/k8s-terraform"
-                sh "pwd"
-                sh "terraform init"
-                sh "terraform apply -auto-approve"
+                sh """
+                cd ${WORKSPACE}/infrastructure/k8s-terraform
+                terraform init
+                terraform apply -auto-approve
+                """
 
                 script {
                     while(true) {
