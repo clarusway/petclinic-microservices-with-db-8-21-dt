@@ -93,7 +93,7 @@ pipeline {
                         echo "Master Instance is not UP and running yet. Will try to reach again after 10 seconds..."
                         sleep(10)
 
-                        ip = sh(script:"aws ec2 describe-instances --region ${AWS_REGION} --filters Name=tag-value,Values=kube-master Name=tag-value,Values=tera-kube-ans --query Reservations[*].Instances[*].[PublicIpAddress] --output text | grep -v "None"", returnStdout:true).trim()
+                        ip = sh(script:"aws ec2 describe-instances --region ${AWS_REGION} --filters Name=tag-value,Values=kube-master Name=tag-value,Values=tera-kube-ans --query Reservations[*].Instances[*].[PublicIpAddress] --output text | grep -v None", returnStdout:true).trim()
 
                         if (ip.length() >= 7) {
                             echo "Kube Master Public Ip Address Found: $ip"
