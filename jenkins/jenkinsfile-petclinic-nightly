@@ -76,8 +76,11 @@ pipeline {
                 sh "chmod 400 ${CFN_KEYPAIR}"
             }
         }
-/*        stage('Create QA Automation Infrastructure') {
+        stage('Create QA Automation Infrastructure') {
             steps {
+                echo "Update main.tf file for key-pair"
+                sh "sed -i 's/james-test-dev.key/call3-petclinic-dev-18.key/g' /var/lib/jenkins/workspace/petclinic-nightly/infrastructure/k8s-terraform/main.tf"
+                sh "cat ${WORKSPACE}/infrastructure/k8s-terraform/main.tf"
                 echo 'Creating QA Automation Infrastructure for Dev Environment with Terraform'
                 sh """
                 cd ${WORKSPACE}/infrastructure/k8s-terraform
@@ -112,12 +115,9 @@ pipeline {
                 }
             }
         }
-*/
+
         stage('Create Kubernetes Cluster for QA Automation Build') {
             steps {
-                echo "Update main.tf file for key-pair"
-                sh "sed -i 's/james-test-dev.key/call3-petclinic-dev-18.key/g' /var/lib/jenkins/workspace/petclinic-nightly/infrastructure/k8s-terraform/main.tf"
-                sh "cat ${WORKSPACE}/infrastructure/k8s-terraform/main.tf"
                 echo "Setup Kubernetes Cluster for QA Automation Build for ${APP_NAME} App"
                 sh "ansible-playbook -i ${WORKSPACE}/ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml ${WORKSPACE}/ansible/playbooks/k8s_setup.yaml"
             }
