@@ -1,102 +1,102 @@
 ---
-- hosts: all
-  become: true
-  tasks:
+# - hosts: all
+#   become: true
+#   tasks:
 
-  - name: change hostnames
-    shell: "hostnamectl set-hostname {{ hostvars[inventory_hostname]['private_dns_name'] }}"
+#   - name: change hostnames
+#     shell: "hostnamectl set-hostname {{ hostvars[inventory_hostname]['private_dns_name'] }}"
 
-  - name: swap off
-    shell: |
-      free -m
-      swapoff -a && sed -i '/ swap / s/^/#/' /etc/fstab
+#   - name: swap off
+#     shell: |
+#       free -m
+#       swapoff -a && sed -i '/ swap / s/^/#/' /etc/fstab
 
-  - name: Enable the nodes to see bridged traffic
-    shell: |
-      cat << EOF | sudo tee /etc/sysctl.d/k8s.conf
-      net.bridge.bridge-nf-call-ip6tables = 1
-      net.bridge.bridge-nf-call-iptables = 1
-      EOF
-      sysctl --system
+#   - name: Enable the nodes to see bridged traffic
+#     shell: |
+#       cat << EOF | sudo tee /etc/sysctl.d/k8s.conf
+#       net.bridge.bridge-nf-call-ip6tables = 1
+#       net.bridge.bridge-nf-call-iptables = 1
+#       EOF
+#       sysctl --system
 
-  - name: update apt-get
-    shell: apt-get update
+#   - name: update apt-get
+#     shell: apt-get update
 
-  - name: Install packages that allow apt to be used over HTTPS
-    apt:
-      name: "{{ packages }}"
-      state: present
-      update_cache: yes
-    vars:
-      packages:
-      - apt-transport-https  
-      - curl
-      - ca-certificates
+#   - name: Install packages that allow apt to be used over HTTPS
+#     apt:
+#       name: "{{ packages }}"
+#       state: present
+#       update_cache: yes
+#     vars:
+#       packages:
+#       - apt-transport-https  
+#       - curl
+#       - ca-certificates
 
-  - name: update apt-get and install kube packages
-    shell: |
-      curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \
-      echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list && \
-      apt-get update -q && \
-      apt-get install -qy kubelet=1.19.0-00 kubectl=1.19.0-00 kubeadm=1.19.0-00 docker.io
+#   - name: update apt-get and install kube packages
+#     shell: |
+#       curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \
+#       echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list && \
+#       apt-get update -q && \
+#       apt-get install -qy kubelet=1.19.0-00 kubectl=1.19.0-00 kubeadm=1.19.0-00 docker.io
 
-  - name: Add ubuntu to docker group
-    user:
-      name: ubuntu
-      group: docker
+#   - name: Add ubuntu to docker group
+#     user:
+#       name: ubuntu
+#       group: docker
 
-  - name: Restart docker and enable
-    service:
-      name: docker
-      state: restarted
-      enabled: yes
+#   - name: Restart docker and enable
+#     service:
+#       name: docker
+#       state: restarted
+#       enabled: yes
 
-  - name: Restart kubelet
-    service:
-      name: kubelet
-      daemon_reload: yes
-      state: restarted
+#   - name: Restart kubelet
+#     service:
+#       name: kubelet
+#       daemon_reload: yes
+#       state: restarted
 
 
 - hosts: role_master
   tasks:
       
-  - name: pull kubernetes images before installation
-    become: yes
-    shell: kubeadm config images pull
+  # - name: pull kubernetes images before installation
+  #   become: yes
+  #   shell: kubeadm config images pull
 
-  - name: copy the configuration
-    become: yes
-    copy: 
-      src: ./clusterconfig-base.yml
-      dest: /home/ubuntu/
+  # - name: copy the configuration
+  #   become: yes
+  #   copy: 
+  #     src: ./clusterconfig-base.yml
+  #     dest: /home/ubuntu/
   
-  - name: get gettext-base
-    become: true
-    apt:
-      package: gettext-base
-      state: present
+  # - name: get gettext-base
+  #   become: true
+  #   apt:
+  #     package: gettext-base
+  #     state: present
 
-  - name: change controlplane_endpoint and produce the clusterconfig.yml file
-    shell: |
-      export CONTROLPLANE_ENDPOINT={{ hostvars[inventory_hostname]['private_ip_address'] }}
-      envsubst < /home/ubuntu/clusterconfig-base.yml > /home/ubuntu/clusterconfig.yml
+  # - name: change controlplane_endpoint and produce the clusterconfig.yml file
+  #   shell: |
+  #     export CONTROLPLANE_ENDPOINT={{ hostvars[inventory_hostname]['private_ip_address'] }}
+  #     envsubst < /home/ubuntu/clusterconfig-base.yml > /home/ubuntu/clusterconfig.yml
 
-  - name: initialize the Kubernetes cluster using kubeadm
-    become: true
-    shell: |
-      kubeadm init --config /home/ubuntu/clusterconfig.yml
+  # - name: initialize the Kubernetes cluster using kubeadm
+  #   become: true
+  #   shell: |
+  #     kubeadm init --config /home/ubuntu/clusterconfig.yml
     
-  - name: Setup kubeconfig for ubuntu user
-    become: true
-    command: "{{ item }}"
-    with_items:
-     - mkdir -p /home/ubuntu/.kube
-     - cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
-     - chown ubuntu:ubuntu /home/ubuntu/.kube/config
+  # - name: Setup kubeconfig for ubuntu user
+  #   become: true
+  #   command: "{{ item }}"
+  #   with_items:
+  #    - mkdir -p /home/ubuntu/.kube
+  #    - cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
+  #    - chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
-  - name: Install flannel pod network
-    shell: kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+  # - name: Install flannel pod network
+  #   shell: kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
 
   - name: Generate join command
     become: true
