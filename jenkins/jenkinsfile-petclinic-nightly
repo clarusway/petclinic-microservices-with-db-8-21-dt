@@ -85,7 +85,7 @@ pipeline {
                 sh """
                 cd ${WORKSPACE}/infrastructure/k8s-terraform
                 terraform init
-                terraform apply -auto-approve
+                terraform apply -auto-approve -lock-false
                 """
 
                 script {
