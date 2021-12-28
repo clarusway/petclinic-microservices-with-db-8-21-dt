@@ -8,8 +8,8 @@ pipeline {
         AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-caller-identity --query Account --output text', returnStdout:true).trim()
         AWS_REGION="us-east-1"
         ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-        CFN_KEYPAIR="call3-${APP_NAME}-dev-${BUILD_NUMBER}.key"
-        CFN_TEMPLATE="./infrastructure/dev-docker-swarm-infrastructure-cfn-template.yml"
+        //CFN_KEYPAIR="call3-${APP_NAME}-dev-${BUILD_NUMBER}.key"
+        CFN_KEYPAIR="james-test-dev.key"
         ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${CFN_KEYPAIR}"
         ANSIBLE_HOST_KEY_CHECKING="False"
     }
@@ -116,6 +116,9 @@ pipeline {
 */
         stage('Create Kubernetes Cluster for QA Automation Build') {
             steps {
+                echo "Update main.tf file for key-pair"
+                sh "sed -i /james-test-dev.key/${CFN_KEYPAIR}/g ${WORKSPACE}/infrastructure/k8s-terraform/main.tf"
+                cat "${WORKSPACE}/infrastructure/k8s-terraform/main.tf"
                 echo "Setup Kubernetes Cluster for QA Automation Build for ${APP_NAME} App"
                 sh "ansible-playbook -i ${WORKSPACE}/ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml ${WORKSPACE}/ansible/playbooks/k8s_setup.yaml"
             }
