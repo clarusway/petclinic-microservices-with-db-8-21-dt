@@ -13,7 +13,7 @@ pipeline {
         ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${CFN_KEYPAIR}"
         ANSIBLE_HOST_KEY_CHECKING="False"
     }
-    stages {
+/*    stages {
         stage('Create ECR Repo') {
             steps {
                 echo "Creating ECR Repo for ${APP_NAME} app"
@@ -69,7 +69,7 @@ pipeline {
                 echo "Pushing ${APP_NAME} App Images to ECR Repo"
                 sh ". ./jenkins/push-dev-docker-images-to-ecr.sh"
             }
-        }
+        } */
         stage('Create Key Pair for Ansible') {
             steps {
                 echo "Creating Key Pair for ${APP_NAME} App"
@@ -81,6 +81,7 @@ pipeline {
             steps {
                 echo 'Creating QA Automation Infrastructure for Dev Environment with Terraform'
                 sh "cd ${WORKSPACE}/infrastructure/k8s-terraform"
+                sh "pwd"
                 sh "terraform init"
                 sh "terraform apply -auto-approve"
 
