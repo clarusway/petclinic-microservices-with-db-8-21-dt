@@ -138,7 +138,7 @@ pipeline {
 
                     while(true) {
                         try{
-                            sh "curl -s ${GRAND_MASTER_PUBLIC_IP}:8080"
+                            sh "curl -s ${GRAND_MASTER_PUBLIC_IP}:30001"
                             echo "${APP_NAME} app is successfully deployed."
                             break
                         }

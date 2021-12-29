@@ -3,6 +3,7 @@ regions:
   - "us-east-1"
 filters:
   tag:Project: tera-kube-ans
+  tag:environment: dev
 keyed_groups:
   - key: tags['Project']
     prefix: 'all_instances'

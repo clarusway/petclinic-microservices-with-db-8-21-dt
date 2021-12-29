@@ -121,31 +121,31 @@
       daemon_reload: yes
       state: restarted
 
-- hosts: role_master
-  become: false
-  tasks:
+# - hosts: role_master
+#   become: false
+#   tasks:
 
-  - name: Patch the instances
-    become: false
-    shell: |
-      cd /home/ubuntu
-      kubectl patch node {{ hostvars[groups['role_master'][0]]['private_dns_name'] }} -p '{"spec":{"providerID":"aws:///us-east-1a/{{ hostvars[groups['role_master'][0]]['instance_id'] }}" }}'
-      kubectl patch node {{ hostvars[groups['role_worker'][0]]['private_dns_name'] }} -p '{"spec":{"providerID":"aws:///us-east-1a/{{ hostvars[groups['role_worker'][0]]['instance_id'] }}" }}'
-      kubectl patch node {{ hostvars[groups['role_worker'][1]]['private_dns_name'] }} -p '{"spec":{"providerID":"aws:///us-east-1a/{{ hostvars[groups['role_worker'][1]]['instance_id'] }}" }}'
+#   - name: Patch the instances
+#     become: false
+#     shell: |
+#       cd /home/ubuntu
+#       kubectl patch node {{ hostvars[groups['role_master'][0]]['private_dns_name'] }} -p '{"spec":{"providerID":"aws:///us-east-1a/{{ hostvars[groups['role_master'][0]]['instance_id'] }}" }}'
+#       kubectl patch node {{ hostvars[groups['role_worker'][0]]['private_dns_name'] }} -p '{"spec":{"providerID":"aws:///us-east-1a/{{ hostvars[groups['role_worker'][0]]['instance_id'] }}" }}'
+#       kubectl patch node {{ hostvars[groups['role_worker'][1]]['private_dns_name'] }} -p '{"spec":{"providerID":"aws:///us-east-1a/{{ hostvars[groups['role_worker'][1]]['instance_id'] }}" }}'
         
-  - name: Deploy AWS CSI Driver
-    become: false
-    shell: kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-0.10"
+#   - name: Deploy AWS CSI Driver
+#     become: false
+#     shell: kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-0.10"
           
-  - name: Deploy the required cloud-controller-manager 
-    shell: |
-      cd /home/ubuntu
-      curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-      chmod 777 get_helm.sh
-      ./get_helm.sh
-      helm repo add aws-cloud-controller-manager https://kubernetes.github.io/cloud-provider-aws
-      helm repo update
-      helm upgrade --install aws-cloud-controller-manager aws-cloud-controller-manager/aws-cloud-controller-manager --set image.tag=v1.18.0-alpha.0
+#   - name: Deploy the required cloud-controller-manager 
+#     shell: |
+#       cd /home/ubuntu
+#       curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+#       chmod 777 get_helm.sh
+#       ./get_helm.sh
+#       helm repo add aws-cloud-controller-manager https://kubernetes.github.io/cloud-provider-aws
+#       helm repo update
+#       helm upgrade --install aws-cloud-controller-manager aws-cloud-controller-manager/aws-cloud-controller-manager --set image.tag=v1.18.0-alpha.0
       
-  - name: Deploy Nginx Ingress 
-    shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.45.0/deploy/static/provider/aws/deploy.yaml
+#   - name: Deploy Nginx Ingress 
+#     shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.45.0/deploy/static/provider/aws/deploy.yaml

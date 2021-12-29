@@ -15,6 +15,7 @@ spec:
   ports:
     - name: "8080"
       port: 8080
+      nodePort: 30001
       targetPort: 8080
   selector:
     io.kompose.service: api-gateway
