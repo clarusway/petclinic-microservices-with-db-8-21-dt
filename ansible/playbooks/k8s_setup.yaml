@@ -61,12 +61,19 @@
   become: true
   tasks:
 
-  - name: install awscli
-    shell: |
-      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      unzip awscliv2.zip
-      ./aws/install
-      
+  - name: download awscliv2 installer
+    unarchive:
+      src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+      dest: /tmp
+      remote_src: yes
+      creates: /tmp/aws
+      mode: 0755
+
+  - name: run the installer
+    command:
+    args:
+      cmd: "/tmp/aws/install"
+
 - hosts: role_master
   tasks:
       
