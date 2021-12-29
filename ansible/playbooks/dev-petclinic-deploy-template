@@ -1,4 +1,4 @@
-- hosts: all # role_master
+- hosts: role_master
   tasks:
   
   - name: copy the kubernetes yaml files
