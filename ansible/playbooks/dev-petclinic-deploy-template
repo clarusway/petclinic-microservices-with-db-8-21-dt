@@ -1,9 +1,16 @@
-- hosts: role_master
+- hosts: all # role_master
   tasks:
-      
+  
+  - name: copy the kubernetes yaml files
+    become: yes
+    copy: 
+      src: ${WORKSPACE}/k8s
+      dest: /home/ubuntu/k8s
+
   - name: deploy petclinic application
     shell: |
       kubectl delete secret regcred -n petclinic-staging-ns || true
+      aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
       kubectl create secret generic regcred -n petclinic-staging-ns \
         --from-file=.dockerconfigjson=$JENKINS_HOME/.docker/config.json \
         --type=kubernetes.io/dockerconfigjson
