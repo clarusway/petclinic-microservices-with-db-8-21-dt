@@ -12,7 +12,7 @@ pipeline {
         ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${CFN_KEYPAIR}"
         ANSIBLE_HOST_KEY_CHECKING="False"
     }
-    stages {
+/*    stages {
         stage('Create ECR Repo') {
             steps {
                 echo "Creating ECR Repo for ${APP_NAME} app"
@@ -158,22 +158,22 @@ pipeline {
             }
         }
     }
-
+*/
     post {
         always {
             echo 'Deleting all local images'
             sh 'docker image prune -af'
+            echo 'Tear down the Kubernetes Cluster infrastructure'
+            sh """
+            cd ${WORKSPACE}/infrastructure/k8s-terraform
+            terraform destroy -auto-approve
+            """
             echo 'Delete the Image Repository on ECR'
             sh """
                 aws ecr delete-repository \
                   --repository-name ${APP_REPO_NAME} \
                   --region ${AWS_REGION}\
                   --force
-                """
-            echo 'Tear down the Kubernetes Cluster infrastructure'
-            sh """
-            cd ${WORKSPACE}/infrastructure/k8s-terraform"
-            terraform destroy -auto-approve
             """
             echo "Delete existing key pair using AWS CLI"
             sh "aws ec2 delete-key-pair --region ${AWS_REGION} --key-name ${CFN_KEYPAIR}"
