@@ -57,9 +57,14 @@
       daemon_reload: yes
       state: restarted
 
-- hosts: role_master
+- hosts: all #role_master
   become: true
   tasks:
+
+  - name: Install the package "zip"
+    apt:
+      name: zip
+      state: present
 
   - name: download awscliv2 installer
     unarchive:
