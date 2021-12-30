@@ -5,7 +5,7 @@
     become: yes
     copy: 
       src: ${WORKSPACE}/k8s
-      dest: /home/ubuntu/k8s
+      dest: /home/ubuntu
 
   - name: Create .docker folder
     file:
