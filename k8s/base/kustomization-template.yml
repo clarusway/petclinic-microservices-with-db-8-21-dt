@@ -24,25 +24,25 @@ resources:
 - vets-service-service.yaml
 - visits-service-service.yaml
 # - api-gateway-ingress.yaml
-
+{{ .Values.IMAGE_TAG_ADMIN_SERVER }}
 images:
-- name: IMAGE_TAG_CONFIG_SERVER
+- name: {{ .Values.IMAGE_TAG_CONFIG_SERVER }}
   newName: "${IMAGE_TAG_CONFIG_SERVER}"
-- name: IMAGE_TAG_DISCOVERY_SERVER
+- name: {{ .Values.IMAGE_TAG_DISCOVERY_SERVER }}
   newName: "${IMAGE_TAG_DISCOVERY_SERVER}"
-- name: IMAGE_TAG_CUSTOMERS_SERVICE
+- name: {{ .Values.IMAGE_TAG_CUSTOMERS_SERVICE }}
   newName: "${IMAGE_TAG_CUSTOMERS_SERVICE}"
-- name: IMAGE_TAG_VISITS_SERVICE
+- name: {{ .Values.IMAGE_TAG_VISITS_SERVICE }}
   newName: "${IMAGE_TAG_VISITS_SERVICE}"
-- name: IMAGE_TAG_VETS_SERVICE
+- name: {{ .Values.IMAGE_TAG_VETS_SERVICE }}
   newName: "${IMAGE_TAG_VETS_SERVICE}"
-- name: IMAGE_TAG_API_GATEWAY
+- name: {{ .Values.IMAGE_TAG_API_GATEWAY }}
   newName: "${IMAGE_TAG_API_GATEWAY}"
-- name: IMAGE_TAG_ADMIN_SERVER
+- name: {{ .Values.IMAGE_TAG_ADMIN_SERVER }}
   newName: "${IMAGE_TAG_ADMIN_SERVER}"
-- name: IMAGE_TAG_HYSTRIX_DASHBOARD
+- name: {{ .Values.IMAGE_TAG_HYSTRIX_DASHBOARD }}
   newName: "${IMAGE_TAG_HYSTRIX_DASHBOARD}"
-- name: IMAGE_TAG_GRAFANA_SERVICE
+- name: {{ .Values.IMAGE_TAG_GRAFANA_SERVICE }}
   newName: "${IMAGE_TAG_GRAFANA_SERVICE}"
-- name: IMAGE_TAG_PROMETHEUS_SERVICE
+- name: {{ .Values.IMAGE_TAG_PROMETHEUS_SERVICE }}
   newName: "${IMAGE_TAG_PROMETHEUS_SERVICE}"
