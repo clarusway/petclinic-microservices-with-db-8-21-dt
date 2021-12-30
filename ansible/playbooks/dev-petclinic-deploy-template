@@ -21,8 +21,8 @@
 
   - name: deploy petclinic application
     shell: |
-      kubectl delete secret regcred -n petclinic-staging-ns || true
-      kubectl create secret generic regcred -n petclinic-staging-ns \
+      kubectl delete secret regcred -n petclinic-dev || true
+      kubectl create secret generic regcred -n petclinic-dev \
         --from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
         --type=kubernetes.io/dockerconfigjson
       kubectl apply -k k8s/dev/
