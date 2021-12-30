@@ -16,13 +16,13 @@
   - name: copy the docker config file
     become: yes
     copy: 
-      src: ${HOME}/.docker/config.json
+      src: $JENKINS_HOME/.docker/config.json
       dest: /home/ubuntu/.docker/config.json
 
   - name: deploy petclinic application
     shell: |
       kubectl delete secret regcred -n petclinic-staging-ns || true
       kubectl create secret generic regcred -n petclinic-staging-ns \
-        --from-file=.dockerconfigjson=$JENKINS_HOME/.docker/config.json \
+        --from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
         --type=kubernetes.io/dockerconfigjson
       kubectl apply -k k8s/dev/
