@@ -7,8 +7,17 @@
       src: ${WORKSPACE}/k8s
       dest: /home/ubuntu/k8s
 
-  - name: login ecr
-    shell: aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+  - name: Create .docker folder
+    file:
+      path: /home/ubuntu/.docker
+      state: directory
+      mode: '0755'
+
+  - name: copy the docker config file
+    become: yes
+    copy: 
+      src: ${HOME}/.docker/config.json
+      dest: /home/ubuntu/.docker/config.json
 
   - name: deploy petclinic application
     shell: |

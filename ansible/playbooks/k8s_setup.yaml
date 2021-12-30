@@ -57,7 +57,7 @@
       daemon_reload: yes
       state: restarted
 
-- hosts: all #role_master
+- hosts: role_master
   become: true
   tasks:
 
