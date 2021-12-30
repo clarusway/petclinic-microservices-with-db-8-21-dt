@@ -21,6 +21,7 @@
 
   - name: deploy petclinic application
     shell: |
+      kubectl create ns petclinic-dev
       kubectl delete secret regcred -n petclinic-dev || true
       kubectl create secret generic regcred -n petclinic-dev \
         --from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
