@@ -23,7 +23,7 @@ resources:
 - tracing-server-service.yaml
 - vets-service-service.yaml
 - visits-service-service.yaml
-- api-gateway-ingress.yaml
+# - api-gateway-ingress.yaml
 
 images:
 - name: IMAGE_TAG_CONFIG_SERVER
