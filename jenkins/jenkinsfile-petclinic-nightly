@@ -178,7 +178,7 @@ pipeline {
                             sleep(5)
                         }
                     }
-                                    script {
+                                
                     while(true) {
                         try{
                             sh "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ${WORKSPACE}/${CFN_KEYPAIR} ubuntu@${GRAND_MASTER_PUBLIC_IP} ls a"
