@@ -23,26 +23,26 @@ resources:
 - tracing-server-service.yaml
 - vets-service-service.yaml
 - visits-service-service.yaml
-- api-gateway-ingress.yaml
+# - api-gateway-ingress.yaml
 
 images:
-- name: {{ .Values.IMAGE_TAG_CONFIG_SERVER }}
+- name: '{{ .Values.IMAGE_TAG_CONFIG_SERVER }}'
   newName: "testing-image-1"
-- name: IMAGE_TAG_DISCOVERY_SERVER
+- name: '{{ .Values.IMAGE_TAG_DISCOVERY_SERVER }}'
   newName: "testing-image-2"
-- name: IMAGE_TAG_CUSTOMERS_SERVICE
+- name: '{{ .Values.IMAGE_TAG_CUSTOMERS_SERVICE }}'
   newName: "testing-image-3"
-- name: IMAGE_TAG_VISITS_SERVICE
+- name: '{{ .Values.IMAGE_TAG_VISITS_SERVICE }}'
   newName: "testing-image-4"
-- name: IMAGE_TAG_VETS_SERVICE
+- name: '{{ .Values.IMAGE_TAG_VETS_SERVICE }}'
   newName: "testing-image-5"
-- name: IMAGE_TAG_API_GATEWAY
+- name: '{{ .Values.IMAGE_TAG_API_GATEWAY }}'
   newName: "testing-image-6"
-- name: IMAGE_TAG_ADMIN_SERVER
+- name: '{{ .Values.IMAGE_TAG_ADMIN_SERVER }}'
   newName: "testing-image-7"
-- name: IMAGE_TAG_HYSTRIX_DASHBOARD
+- name: '{{ .Values.IMAGE_TAG_HYSTRIX_DASHBOARD }}'
   newName: "testing-image-8"
-- name: IMAGE_TAG_GRAFANA_SERVICE
+- name: '{{ .Values.IMAGE_TAG_GRAFANA_SERVICE }}'
   newName: "testing-image-9"
-- name: IMAGE_TAG_PROMETHEUS_SERVICE
+- name: '{{ .Values.IMAGE_TAG_PROMETHEUS_SERVICE }}'
   newName: "testing-image-10"
