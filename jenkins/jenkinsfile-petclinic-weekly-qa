@@ -4,8 +4,7 @@ pipeline {
         PATH=sh(script:"echo $PATH:/usr/local/bin", returnStdout:true).trim()
         APP_NAME="petclinic"
         APP_REPO_NAME="clarusway-repo/petclinic-app-qa"
-        APP_STACK_NAME="dt-petclinic-App-QA-1"
-        CFN_KEYPAIR="dt-petclinic-qa.key"
+        CFN_KEYPAIR="matt-${APP_NAME}-qa.key"
         AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-caller-identity --query Account --output text', returnStdout:true).trim()
         AWS_REGION="us-east-1"
         ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
@@ -57,9 +56,10 @@ pipeline {
                 sh ". ./jenkins/push-qa-docker-images-to-ecr.sh"
             }
         }
-        stage('Deploy App on Docker Swarm'){
+        stage('Deploy App on Kubernetes'){
             steps {
-                echo 'Deploying App on Swarm'
+                echo 'Deploying App on Kubernetes'
+                sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
                 sh '. ./ansible/scripts/deploy_app_on_qa_environment.sh'
             }
         }
