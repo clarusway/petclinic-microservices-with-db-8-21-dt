@@ -64,5 +64,6 @@ pipeline {
             cd ${WORKSPACE}/infrastructure/qa-k8s-terraform
             terraform destroy -auto-approve
             """
+        }
     }
 }
