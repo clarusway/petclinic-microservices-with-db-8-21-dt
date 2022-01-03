@@ -5,18 +5,18 @@ pipeline {
         APP_NAME="petclinic"
         AWS_REGION="us-east-1"
         CFN_KEYPAIR="matt-${APP_NAME}-qa.key"
-        ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${CFN_KEYPAIR}"
+        ANSIBLE_PRIVATE_KEY_FILE="${JENKINS_HOME}/.ssh/${CFN_KEYPAIR}"
         ANSIBLE_HOST_KEY_CHECKING="False"
     }
     stages {
         stage('Create QA Automation Infrastructure') {
             steps {
                 echo "Update main.tf file for key-pair"
-                sh "sed -i 's/mattkey/${CFN_KEYPAIR}/g' /var/lib/jenkins/workspace/petclinic-nightly/infrastructure/dev-k8s-terraform/main.tf"
-                sh "cat ${WORKSPACE}/infrastructure/dev-k8s-terraform/main.tf"
+                sh "sed -i 's/mattkey/${CFN_KEYPAIR}/g' /var/lib/jenkins/workspace/create-qa-environment-on-kubernetes-cluster/infrastructure/qa-k8s-terraform/main.tf"
+                sh "cat ${WORKSPACE}/infrastructure/qa-k8s-terraform/main.tf"
                 echo 'Creating QA Automation Infrastructure for Dev Environment with Terraform'
                 sh """
-                cd ${WORKSPACE}/infrastructure/dev-k8s-terraform
+                cd ${WORKSPACE}/infrastructure/qa-k8s-terraform
                 terraform init
                 terraform apply -auto-approve
                 """
@@ -36,7 +36,7 @@ pipeline {
                     }
                     while(true) {
                         try{
-                            sh "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ${WORKSPACE}/${CFN_KEYPAIR} ubuntu@${GRAND_MASTER_PUBLIC_IP} hostname"
+                            sh "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ${JENKINS_HOME}/.ssh/${CFN_KEYPAIR} ubuntu@${GRAND_MASTER_PUBLIC_IP} hostname"
                             echo "Kube Master is reachable with SSH."
                             break
                         }
@@ -61,9 +61,8 @@ pipeline {
         failure {
             echo 'Tear down the Kubernetes Cluster infrastructure'
             sh """
-            cd ${WORKSPACE}/infrastructure/dev-k8s-terraform
+            cd ${WORKSPACE}/infrastructure/qa-k8s-terraform
             terraform destroy -auto-approve
             """
     }
-}
 }
