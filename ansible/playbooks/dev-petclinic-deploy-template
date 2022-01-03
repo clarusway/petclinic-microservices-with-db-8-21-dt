@@ -19,11 +19,11 @@
       src: $JENKINS_HOME/.docker/config.json
       dest: /home/ubuntu/.docker/config.json
 
-  # - name: deploy petclinic application
-  #   shell: |
-  #     kubectl create ns petclinic-dev
-  #     kubectl delete secret regcred -n petclinic-dev || true
-  #     kubectl create secret generic regcred -n petclinic-dev \
-  #       --from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
-  #       --type=kubernetes.io/dockerconfigjson
-  #     kubectl apply -k k8s/dev/
+  - name: deploy petclinic application
+    shell: |
+      kubectl create ns petclinic-dev
+      kubectl delete secret regcred -n petclinic-dev || true
+      kubectl create secret generic regcred -n petclinic-dev \
+        --from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
+        --type=kubernetes.io/dockerconfigjson
+      kubectl apply -k k8s/dev/
