@@ -26,4 +26,6 @@
       kubectl create secret generic regcred -n petclinic-qa \
         --from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
         --type=kubernetes.io/dockerconfigjson
-      kubectl apply -k k8s/qa/
+
+  - name: deploy petclinic application-2
+    shell: kubectl apply -k k8s/qa/
