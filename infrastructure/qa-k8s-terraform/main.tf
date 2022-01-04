@@ -179,23 +179,23 @@ resource "aws_instance" "worker-1" {
     }
 }
 
-resource "aws_instance" "worker-2" {
-    ami = "ami-013f17f36f8b1fefb"
-    instance_type = "t2.medium"
-    iam_instance_profile = module.iam.worker_profile_name
-    vpc_security_group_ids = [aws_security_group.matt-kube-worker-sg.id, aws_security_group.matt-kube-mutual-sg.id]
-    key_name = "mattkey"
-    subnet_id = "subnet-c41ba589"
-    # subnet_id = "subnet-3ccd235a"
-    availability_zone = "us-east-1a"
-    tags = {
-        Name = "worker-2"
-        "kubernetes.io/cluster/mattsCluster" = "owned"
-        Project = "tera-kube-ans"
-        Role = "worker"
-        Id = "2"
-        environment = "qa"
-    }
+# resource "aws_instance" "worker-2" {
+#     ami = "ami-013f17f36f8b1fefb"
+#     instance_type = "t2.medium"
+#     iam_instance_profile = module.iam.worker_profile_name
+#     vpc_security_group_ids = [aws_security_group.matt-kube-worker-sg.id, aws_security_group.matt-kube-mutual-sg.id]
+#     key_name = "mattkey"
+#     subnet_id = "subnet-c41ba589"
+#     # subnet_id = "subnet-3ccd235a"
+#     availability_zone = "us-east-1a"
+#     tags = {
+#         Name = "worker-2"
+#         "kubernetes.io/cluster/mattsCluster" = "owned"
+#         Project = "tera-kube-ans"
+#         Role = "worker"
+#         Id = "2"
+#         environment = "qa"
+#     }
 }
 
 output kube-master-ip {
