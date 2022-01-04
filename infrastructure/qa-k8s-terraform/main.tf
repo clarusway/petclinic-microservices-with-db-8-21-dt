@@ -196,7 +196,7 @@ resource "aws_instance" "worker-1" {
 #         Id = "2"
 #         environment = "qa"
 #     }
-}
+# }
 
 output kube-master-ip {
   value       = aws_instance.kube-master.public_ip
